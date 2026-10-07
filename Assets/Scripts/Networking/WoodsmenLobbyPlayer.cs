@@ -97,6 +97,7 @@ namespace Woodsmen.Networking
             else
             {
                 selectedClass = GetAvailableClass();
+                isReady = true;
             }
 
             int playerNumber = AllPlayers.Count;
@@ -152,6 +153,13 @@ namespace Woodsmen.Networking
             if (isLocalPlayer)
             {
                 LocalPlayer = this;
+                
+                // Get the real EOS Display Name
+                string eosName = EpicTransport.EOSSDKComponent.DisplayName;
+                if (!string.IsNullOrEmpty(eosName) && eosName != "User") 
+                {
+                    CmdSetPlayerName(isHost ? eosName + " (Host)" : eosName);
+                }
             }
 
             TriggerPlayersUpdated();
@@ -240,6 +248,7 @@ namespace Woodsmen.Networking
             }
 
             selectedClass = newClass;
+            isReady = true;
             Debug.Log($"[WoodsmenLobbyPlayer] Player {playerName} selected class: {newClass}");
         }
 
